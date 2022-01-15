@@ -29,12 +29,25 @@ declare module "starbeam" {
     (...args: ReactiveTuple<Args>): State;
   }
 
+  export class Resource {
+    constructor(...args: AnyTuple);
+  }
+
+  export type ArgsFor<R extends Resource> = R extends {
+    new (...args: infer A): any;
+  }
+    ? A
+    : never;
+
   export function Hook<Args extends AnyTuple, State>(
     create: (...args: Args) => State
   ): UseHook<Args, State>;
   export function Hook<Args extends AnyTuple, State>(
     hook: Hook<Args, State>
   ): UseHook<Args, State>;
+  export function Hook<R extends { new (...args: AnyTuple): unknown }>(
+    resource: R
+  ): UseHook<ConstructorParameters<R>, InstanceType<R>>;
 
   export function onTeardown<T extends object>(
     value: T,
@@ -42,4 +55,6 @@ declare module "starbeam" {
   ): void;
 
   export function onDestroy(callback: () => void): object;
+
+  export function reactive(target: object, name: string): void;
 }
