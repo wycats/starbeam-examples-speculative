@@ -1,0 +1,7 @@
+{
+  "name": "starbeam-examples",
+  "private": true,
+  "devDependencies": {
+    "@types/react": "^17.0.38"
+  }
+}
